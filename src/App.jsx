@@ -8,8 +8,7 @@ import Dashboard from './start'
 import Attendancetake from './component/Attendancetake'
 import Attendancereport from './component/Attendancereport'
 import { styled } from 'styled-components'; 
-
-
+import Assignment from './component/Assignment'
 
 const App = () => {
   return (
@@ -31,6 +30,8 @@ const App = () => {
 <Route path='/marks' element={<Marks/>}/>
 <Route path='/attendancetake' element={<Attendancetake/>}/>
 <Route path='/attendancereport' element={<Attendancereport/>}/>
+<Route path='/editprofile' element={<Editprofile/>}/>
+<Route path='/assignmnet' element={<Assignment/>}/>
 </Routes>
       </div>
     
@@ -57,6 +58,8 @@ const Wrapper= styled.section`
     width:25%;
     background-color:white;
     border-radius:8px;
+    padding-top:30px;
+    padding-bottom:30px;
 
   }
 
@@ -64,8 +67,8 @@ const Wrapper= styled.section`
     width:75%;
     background-color:white;
     border-radius:8px;
-    padding:0 30px;
-    padding-bottom:30px;
+    padding:30px 30px;
+    
     
   }
 }

@@ -39,10 +39,10 @@ const Attendance = () => {
 
     <div className="attendancemain">
       <div className={!isActive?"active":""} onClick={() => {setIsActive(false)}}>
-        Attendance
+        <p> Attendance</p>
       </div>
 
-      <div className={isActive?"active":""} onClick={() => {setIsActive(true)}}>Attendance Report</div>
+      <div className={isActive?"active":""} onClick={() => {setIsActive(true)}}>  <p>Attendance Report</p></div>
     </div>
 
     <div>
@@ -64,18 +64,32 @@ const Wrapper= styled.section`
   background-color:white;
   font-family:var(--fontfamily);
 
+  h1{
+    text-transform:uppercase;
+    font-size:20px;
+  }
+
+  p{
+    text-transform:uppercase;
+    font-size:15px;
+    font-weight:700;
+
+  }
+
 
 .attendancemain{
   display:flex;
   gap:20px;
   border-bottom:2px solid #7ba1eb;
   align-items:center;
+  margin-top:30px;
 }
 .active{
   background-color:#7ba1eb;
   color:white;
   border-radius:1px;
-  padding:15px;
+  padding:5px;
+  padding:20px ;
 
   }
 `

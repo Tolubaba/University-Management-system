@@ -1,9 +1,11 @@
 import React from 'react'
 import { styled } from 'styled-components'
+import GlobalStyles from './GlobalStyles'
 
 const Editprofile = () => {
   return (
     <Wrapper>
+        <GlobalStyles/>
 
         <form className='formmain'>
             <div className='firtname'>
@@ -73,8 +75,11 @@ const Editprofile = () => {
 
 
 const Wrapper =styled.section`
+
+font-family:var(--fontfamily);
+
 .formmain{
-    background-color:whitesmoke;
+    background-color:white;
     display:flex;
     flex-direction:column;
     border-radius:6px;
@@ -95,6 +100,7 @@ const Wrapper =styled.section`
         border:solid  1px rgba(0,0,0,0.3);
         height:45px;
         margin-bottom:10px;
+        padding-left:10px;
     }
 }
 
@@ -105,6 +111,7 @@ textarea{
     margin-bottom:10px;
     border-radius:4px;
     outline:none;
+    padding-left:10px;
 
 }
 
@@ -123,6 +130,7 @@ textarea{
 .label{
     color:black;
     text-transform:capitalize;
+    font-weight:700;
 }
 
 button{
@@ -134,6 +142,12 @@ button{
     border:solid 1px blue;
     color:blue;
     margin-top:10px;
+}
+
+::placeholder{
+
+    font-size:12px;
+    text-transform:uppercase;
 }
 
 `

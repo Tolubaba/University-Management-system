@@ -38,7 +38,6 @@ const Navbar = () => {
 
 
 const Wrapper= styled.header`
-background-color:green;
 
 .profilemain{
   display:flex;
