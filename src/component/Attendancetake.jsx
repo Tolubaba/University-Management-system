@@ -12,17 +12,7 @@ import GlobalStyles from './GlobalStyles'
 
 const Attendancetake = () => {
 
-    const [selectoption,setselectedoption]=useState('')
-    const [selectedDate, setSelectedDate] = useState(null);
-    const handleDateChange = (momentObj) => {
-    setSelectedDate(momentObj);
-      };
-
-
-    const handleselectchange=(e)=>{
-        setselectedoption(e.target.value)
-
-    }
+    
 
   return (
     <Wrapper>
@@ -41,7 +31,7 @@ const Attendancetake = () => {
             
 
         </div>
-        <div className='levelmain'>
+<div className='levelmain'>
             <label> Courses </label>
             <select className='selecttake'>
                 {Courses.map((option,index)=>{

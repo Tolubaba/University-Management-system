@@ -9,11 +9,28 @@ import Attendancetake from './component/Attendancetake'
 import Attendancereport from './component/Attendancereport'
 import { styled } from 'styled-components'; 
 import Assignment from './component/Assignment'
+import Addnewassigment from './component/Addnewassigment'
+// import { useGlobalContext } from './Context'
+import Asignmentpage from './component/Assignmentpage'
+// import { useGlobalcontext } from './UseContext'
+import { BrowserRouter } from 'react-router-dom'
+import { useGlobalContext } from './Context'
+import Detailmain from './component/Detailmain'
+import Loginpage from './component/Loginpage'
 
 const App = () => {
+
+  const {assignmodal}=useGlobalContext()
   return (
   <Wrapper>
-    <Navbar/>
+<BrowserRouter>
+<Navbar/>
+
+    <Loginpage/>
+   
+    {assignmodal && <Addnewassigment/>}
+    
+
 
     <article className='sidediv'>
       <div className='sidebarapp'>
@@ -32,12 +49,15 @@ const App = () => {
 <Route path='/attendancereport' element={<Attendancereport/>}/>
 <Route path='/editprofile' element={<Editprofile/>}/>
 <Route path='/assignmnet' element={<Assignment/>}/>
+<Route path='/assignmentpage/:id' element={<Asignmentpage/>}/>
+<Route path='/detailmain/:id' element={<Detailmain/>}/>
 </Routes>
       </div>
     
        
 
       </article>
+      </BrowserRouter>
     </Wrapper>
   )
 }

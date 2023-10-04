@@ -15,6 +15,8 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
+import  tolu from '../src/images/toluimage.jpeg'
+
 
 
 const Sidebar = () => {
@@ -31,7 +33,7 @@ const Sidebar = () => {
 <section className='sidemain'>
 <div className='profile'>
     <div className='images'>
-      <img  className='image'/>
+      <img src={tolu}  className='image'/>
     </div>
 
     <div className='nameprofile'>

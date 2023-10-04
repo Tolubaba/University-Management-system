@@ -8,10 +8,7 @@ const Editprofile = () => {
         <GlobalStyles/>
 
         <form className='formmain'>
-            <div className='firtname'>
-                <label className='label'> first name</label>
-            <input type='text' placeholder='Toluwase'/>
-            </div>
+           
 
             <div className='lastname'>
                 <label className='label'>last name</label>
