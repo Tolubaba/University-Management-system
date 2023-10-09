@@ -6,12 +6,12 @@ import { createContext } from 'react'
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import reducer from './UseReducer';
-import { app } from './component/firbaseconfig';
-import { getAuth, createUserWithEmailAndPassword ,signInWithEmailAndPassword,onAuthStateChanged} from "firebase/auth";
+import { setDoc, doc } from 'firebase/firestore';
+import { auth, db, storage } from './component/firbaseconfig';
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,onAuthStateChanged, updateProfile} from "firebase/auth";
 
 const AppContext=createContext()
 
-const auth=getAuth()
 
 
 import { PeopleWithIds } from './component/Data';
@@ -178,10 +178,38 @@ const assinfosubmit=()=>{
         console.log(RegisterData)
         createUserWithEmailAndPassword(auth, RegisterData.email,RegisterData.password ).then((response)=>{
           console.log(response.user)
+          const user = {
+            uid: response.user.uid,
+            username: RegisterData.username,
+            firstname: RegisterData.firstname,
+            lastname: RegisterData.lastname,
+            email: RegisterData.email,
+            role: RegisterData.role,
+          }
+          uploadData(user, response.user)
         }).catch((err)=>{
           alert(err.message)
         }) 
     }
+
+    const uploadData = async (user, firebaseUser) => {
+      await setDoc(doc(db, "users", user.uid), user)
+      .then(() => {
+        updateUserProfile(user, firebaseUser)
+      })
+      .catch((err) => { console.log(err) })
+    }
+    
+    const updateUserProfile = async (user, firebaseUser) => {
+      await updateProfile(firebaseUser, {displayName: `${user.firstname} ${user.lastname}`})
+      .then(() => {
+        auth.signOut()
+        // Navigate to login screen
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+
     const loginchange=(e)=>{
       const {name,value}=e.target
       const {LoginData}=state
