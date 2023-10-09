@@ -17,6 +17,7 @@ import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { faFile } from '@fortawesome/free-solid-svg-icons';
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import  tolu from '../src/images/toluimage.jpeg'
+import { auth } from './component/firbaseconfig';
 
 
 
@@ -42,9 +43,25 @@ const Sidebar = () => {
         toluwase orogbemi
       </p>
 
+
+      <div className='buttons'>
+
       <div>
         <Link to='/editprofile'><FontAwesomeIcon icon={faEdit} /> </Link>
         </div>
+
+        <div>
+			<Link to='/'>
+				<FontAwesomeIcon icon={faSignOutAlt} className='signout' onClick={() => {
+					auth.signOut()
+					localStorage.setItem('isLoggedIn', 'false')
+				}} /> 
+			</Link>
+        </div>
+
+      </div>
+
+      
       
       
 
@@ -97,7 +114,7 @@ a{
   font-size:17px;
   font-weight:700;
   &:hover{
-    color:white;
+    color:#8BDBAD;
   }
 
 
@@ -157,6 +174,19 @@ padding-left:25px;
   }
 }
 
+
+.buttons{
+  display:flex;
+  justify-content:space-between;
+  width:50px;
+  margin-top:10px;
+
+  .signout{
+     &:hover{
+      color:#8BDBAD;
+    }
+  }
+}
 `
 
 

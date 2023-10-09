@@ -7,8 +7,9 @@ import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import reducer from './UseReducer';
 import { setDoc, doc } from 'firebase/firestore';
-import { auth, db, storage } from './component/firbaseconfig';
-import { createUserWithEmailAndPassword ,signInWithEmailAndPassword,onAuthStateChanged, updateProfile} from "firebase/auth";
+import { auth, db } from './component/firbaseconfig';
+import { createUserWithEmailAndPassword ,signInWithEmailAndPassword, updateProfile} from "firebase/auth";
+import { useAuthState } from 'react-firebase-hooks/auth'
 
 const AppContext=createContext()
 
@@ -18,7 +19,8 @@ import { PeopleWithIds } from './component/Data';
 
 
   export const AppProvider = ({children}) => {
-    const [User,setUser]=useState('')
+
+    const [user] = useAuthState(auth)
 
     
     const initialstate={
@@ -203,8 +205,7 @@ const assinfosubmit=()=>{
     const updateUserProfile = async (user, firebaseUser) => {
       await updateProfile(firebaseUser, {displayName: `${user.firstname} ${user.lastname}`})
       .then(() => {
-        auth.signOut()
-        // Navigate to login screen
+        localStorage.setItem('isLoggedIn', 'true');
       }).catch((err) => {
         console.log(err)
       })
@@ -221,10 +222,7 @@ const assinfosubmit=()=>{
    e.preventDefault()
     const {LoginData}=state;
     signInWithEmailAndPassword(auth, LoginData.email,LoginData.password ).then((response)=>{
-
-      if(response){
-        setUser(response.user)
-      }
+      if(response) { localStorage.setItem('isLoggedIn', 'true') }
     }).catch((err)=>{
       alert(err.message)
     }) 
@@ -232,7 +230,7 @@ const assinfosubmit=()=>{
      }
 
   return (
-    <AppContext.Provider value={{...state,openassmodal,closeassmodal,handleChange,handleFileChange,handleSubmit,view,editsubmit,editid,getselected,handleeditchange,detailview, assinfochange,loginfalse,logintrue,registerchange,registersubmit,loginchange,loginsubmit,User}}>
+    <AppContext.Provider value={{...state,openassmodal,closeassmodal,handleChange,handleFileChange,handleSubmit,view,editsubmit,editid,getselected,handleeditchange,detailview, assinfochange,loginfalse,logintrue,registerchange,registersubmit,loginchange,loginsubmit,user}}>
         {children}
 
       
