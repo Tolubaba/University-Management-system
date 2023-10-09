@@ -1,44 +1,46 @@
 import React from 'react'
 import styled from 'styled-components'
 import { roles } from './Data'
+import { useGlobalContext } from '../Context'
 
 const Register = () => {
+
+    const {RegisterData,registerchange,registersubmit}=useGlobalContext()
   return (
     <Wrapper>
-
-        <h2> Register </h2>
-        <form>
+    <h2> Register </h2>
+        <form onSubmit={registersubmit}>
             <div className='username'>
                 <label htmlFor='username'> username</label>
-            <input type='text' id='username' name='username'/>
+            <input type='text' id='username' name='username' value={RegisterData.username} onChange={registerchange}/>
 
             </div>
   
             <div className='email'>
                 <label htmlFor='email'> email</label>
-            <input type='email' id='email' name='email'/>
+            <input type='email' id='email' name='email' value={RegisterData.email} onChange={registerchange}/>
 
             </div>
 
             <div className='Firstname'>
                 <label htmlFor='firstname'> firstname</label>
-            <input type='text' id='firstname' name='firstname'/>
+            <input type='text' id='firstname' name='firstname' value={RegisterData.firstname} onChange={registerchange}/>
 
             </div>
             <div className='Lastname'>
                 <label htmlFor='lastname'> lastname</label>
-            <input  type='text' id='lastname' name='lastname'/>
+            <input  type='text' id='lastname' name='lastname' value={RegisterData.lastname} onChange={registerchange}/>
 
             </div>
             <div className='password'>
                 <label htmlFor='password'> password</label>
-            <input  type='password' id='password' name='password'/>
+            <input  type='password' id='password' name='password' value={RegisterData.password} onChange={registerchange}/>
 
             </div>
 
             <div className='select'>
                 <label> select your role</label>
-                <select>
+                <select value={RegisterData.role} onChange={registerchange}>
                     {roles.map((item)=>{
                         return <option> {item.value}</option>
                     })}

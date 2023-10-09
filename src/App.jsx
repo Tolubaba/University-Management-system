@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from './component/navbar'
 import { Onlineexams,Classroutine,Attendance, MyAcocount,Marks } from './component'
+import { useState,useEffect } from 'react'
 import Sidebar from './Sidebar'
 import { Route,Routes } from 'react-router-dom'
 import Editprofile from './component/Editprofile'
@@ -16,23 +17,24 @@ import Asignmentpage from './component/Assignmentpage'
 import { BrowserRouter } from 'react-router-dom'
 import { useGlobalContext } from './Context'
 import Detailmain from './component/Detailmain'
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import Login from './component/Login'
+import Register from './component/Register'
 import Loginpage from './component/Loginpage'
+
+
+
 
 const App = () => {
 
-  const {assignmodal}=useGlobalContext()
+  const {assignmodal,User}=useGlobalContext()
   return (
   <Wrapper>
 <BrowserRouter>
 <Navbar/>
+{assignmodal && <Addnewassigment/>}
 
-    <Loginpage/>
-   
-    {assignmodal && <Addnewassigment/>}
-    
-
-
-    <article className='sidediv'>
+  <article className='sidediv'>
       <div className='sidebarapp'>
       <Sidebar/>
 
@@ -41,7 +43,11 @@ const App = () => {
     
       <div className='otherapp'>
       <Routes>
+      {/* <Route path='/' element={<Loginpage/>}/> */}
+      
+{User?<Route path='/' element={<MyAcocount/>}/>:<Route path='/' element={<Loginpage/>}/>
 
+}
 <Route path='/' element={<MyAcocount/>}/>
 <Route path='/attendance' element={<Attendance/>}/>
 <Route path='/marks' element={<Marks/>}/>

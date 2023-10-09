@@ -1,16 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useGlobalContext } from '../Context'
+import { getAuth, onAuthStateChanged,signInWithEmailAndPassword } from "firebase/auth";
+
+
 
 const Login = () => {
 
-    const {loginfalse}=useGlobalContext()
+    const {loginfalse,LoginData,loginsubmit,loginchange}=useGlobalContext()
   return (
     <Wrapper>
 <h2> login account </h2>
-    <form>
-        <input type='text' placeholder='username'/>
-        <input type='password' placeholder='password'/>
+    <form onSubmit={loginsubmit}>
+        <input type='text' placeholder='username' name='email' onChange={loginchange} />
+        <input type='password' placeholder='password' name='password' onChange={loginchange} />
         <div className='member'><p onClick={loginfalse}>Not a member?</p></div>
         <button type='submit'> login</button>
 
@@ -70,6 +73,7 @@ form{
     justify-content:flex-end;
     font-weight:500;
     color:#7BA1EB;
+    cursor: pointer;
 }
 
 button{

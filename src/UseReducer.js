@@ -28,7 +28,6 @@ const reducer = (state,action) => {
 
         if(action.type=== 'SUBMIT'){
 
-            console.log('tolu')
         const newResponse = { id: state.nextId, ...state.formData, file: state.selectedFile };
 
         console.log(newResponse)
@@ -93,6 +92,14 @@ if(action.type==='INFO_CHANGE'){
 
         if(action.type==='LOGINFALSE'){
             return {...state, login:false}
+        }
+
+        if(action.type==='REGDATA'){
+            return { ...state, RegisterData: { ...state.RegisterData, ...action.payload } };
+        }
+
+        if(action.type==='LOGINDATA'){
+            return {...state,LoginData:{...state.LoginData,...action.payload}}
         }
 
         return state;

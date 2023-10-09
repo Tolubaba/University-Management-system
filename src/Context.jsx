@@ -6,11 +6,21 @@ import { createContext } from 'react'
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import reducer from './UseReducer';
+import { app } from './component/firbaseconfig';
+import { getAuth, createUserWithEmailAndPassword ,signInWithEmailAndPassword,onAuthStateChanged} from "firebase/auth";
+
 const AppContext=createContext()
+
+const auth=getAuth()
+
+
 import { PeopleWithIds } from './component/Data';
 
 
   export const AppProvider = ({children}) => {
+    const [User,setUser]=useState('')
+
+    
     const initialstate={
         assignmodal:false,
         selected:{},
@@ -24,7 +34,7 @@ import { PeopleWithIds } from './component/Data';
     date: '',
     time: ''
   },
-         RegisterData: {
+    RegisterData: {
     username: '',
     email: '',
     firstname: '',
@@ -41,6 +51,11 @@ import { PeopleWithIds } from './component/Data';
   infoData:{
     comment:'',
     mark:''
+  },
+  LoginData:{
+    email:'',
+    password:''
+
   },
 login:true
   
@@ -148,8 +163,48 @@ const assinfosubmit=()=>{
     }
 
 
+
+    const registerchange=(event)=>{
+      const {name,value}=event.target
+      const {RegisterData}=state
+      dispatch({type:'REGDATA',payload:{...RegisterData,[name]:value}})
+
+    }
+
+    const registersubmit=(e)=>{
+        e.preventDefault();
+
+        const {RegisterData}=state
+        console.log(RegisterData)
+        createUserWithEmailAndPassword(auth, RegisterData.email,RegisterData.password ).then((response)=>{
+          console.log(response.user)
+        }).catch((err)=>{
+          alert(err.message)
+        }) 
+    }
+    const loginchange=(e)=>{
+      const {name,value}=e.target
+      const {LoginData}=state
+      dispatch({type:'LOGINDATA',payload:{...LoginData,[name]:value}})
+
+  }
+
+  const loginsubmit=(e)=>{
+   e.preventDefault()
+    const {LoginData}=state;
+    signInWithEmailAndPassword(auth, LoginData.email,LoginData.password ).then((response)=>{
+
+      if(response){
+        setUser(response.user)
+      }
+    }).catch((err)=>{
+      alert(err.message)
+    }) 
+
+     }
+
   return (
-    <AppContext.Provider value={{...state,openassmodal,closeassmodal,handleChange,handleFileChange,handleSubmit,view,editsubmit,editid,getselected,handleeditchange,detailview, assinfochange,loginfalse,logintrue}}>
+    <AppContext.Provider value={{...state,openassmodal,closeassmodal,handleChange,handleFileChange,handleSubmit,view,editsubmit,editid,getselected,handleeditchange,detailview, assinfochange,loginfalse,logintrue,registerchange,registersubmit,loginchange,loginsubmit,User}}>
         {children}
 
       
