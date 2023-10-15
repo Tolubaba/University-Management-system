@@ -2,17 +2,42 @@ import React from "react";
 import { styled } from "styled-components";
 import Assignmentinfo from "./Assignmentinfo";
 import { useGlobalContext } from "../Context";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
+import { setDoc, doc, addDoc, collection, updateDoc, deleteDoc, query } from "firebase/firestore";
+import { auth, db } from "../component/firbaseconfig";
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 
 
-const Assigmentedit = () => {
-  const { formResponses,editsubmit, selected ,handleeditchange,editid,getselected,editdata,hand} = useGlobalContext();
+const Assigmentedit = ({id}) => {
+  const { formResponses,editsubmit ,handleeditchange,editid,getselected,editdata} = useGlobalContext();
 
+  const user = auth.currentUser
+  let assignmentsRef = collection(db, "assignments")
+  let documentRef = doc(assignmentsRef, user ? user.uid : "x")
+  let coll = collection(documentRef, "assignment");
+  const [selecteds, setselecteds] = useState({
+    title: "",
+    description: "",
+    date: "",
+    time:""
+  })
+
+  const assignmentQuery = doc(coll, id)
+  const [assignmentSnapshot, loading, error] = useDocument(assignmentQuery)
+
+  useEffect(() => {
+    if (assignmentSnapshot) {
+       setselecteds({...selecteds,...assignmentSnapshot.data()})
+    }
+  }, [assignmentSnapshot])
+
+  console.log(selecteds)
 
   useEffect(()=>{
-    getselected(selected)
+    getselected(selecteds)
     
   },[])
+
 
   return (
     <Wrapper>
@@ -74,7 +99,6 @@ const Assigmentedit = () => {
           </section>
 
         </form>
-      <Assignmentinfo />
     </Wrapper>
   );
 };

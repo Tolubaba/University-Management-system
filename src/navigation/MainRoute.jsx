@@ -26,11 +26,11 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Login from "../component/Login";
 import Register from "../component/Register";
 import Loginpage from "../component/Loginpage";
+import Registercourse from "../component/Registercourse";
 
 const MainRoute = () => {
   const { assignmodal, user } = useGlobalContext();
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  console.log(isLoggedIn);
   return (
     <Wrapper>
       {/* <BrowserRouter> */}
@@ -79,6 +79,8 @@ const MainRoute = () => {
                 path="/detailmain/:id"
                 element={<Detailmain />}
               />
+
+              <Route path="/registercourse" element={<Registercourse/>}/>
             </Routes>
           </div>
         </article>

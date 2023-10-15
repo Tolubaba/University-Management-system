@@ -7,7 +7,7 @@ import Register from './Register'
 
 const Loginpage = () => {
 
-    const {loginfalse,logintrue,login}=useGlobalContext();
+    const {login}=useGlobalContext();
   return (
     <Wrapper>
         <Navbar/>

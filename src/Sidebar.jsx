@@ -22,6 +22,7 @@ import { auth } from './component/firbaseconfig';
 
 
 const Sidebar = () => {
+	const user = auth.currentUser
   return (
     <Wrapper>
       <GlobalStyles/>
@@ -40,7 +41,7 @@ const Sidebar = () => {
 
     <div className='nameprofile'>
       <p>
-        toluwase orogbemi
+        {user ? user.displayName : ""}
       </p>
 
 
@@ -84,6 +85,8 @@ const Sidebar = () => {
    <h4>  <FontAwesomeIcon icon={faStar}/><Link to='/marks'>Marks</Link> </h4>
    <h4> <FontAwesomeIcon icon={faFile} /><Link to='/assignmnet'>Assignment</Link>
 </h4>
+<h4><FontAwesomeIcon icon={faFileAlt}/> <Link to='/registercourse'>Register</Link>	</h4>  
+
    
   </section>
   
@@ -109,12 +112,12 @@ font-weight:400;
 
 
 a{
-  color:black;
-  text-decoration:none;
+text-decoration:none;
   font-size:17px;
   font-weight:700;
+  color:inherit;
   &:hover{
-    color:#8BDBAD;
+    
   }
 
 
@@ -129,9 +132,7 @@ h4{
   display:flex;
   align-items:center;
   gap:10px;
-
-
-
+  
   &:hover{
     background-color:#8BDBAD;
     color:white;
@@ -154,6 +155,7 @@ display:flex;
 align-items:center;
 gap:15px;
 padding-left:25px;
+margin-bottom:20px;
 
 
 }
@@ -180,6 +182,11 @@ padding-left:25px;
   justify-content:space-between;
   width:50px;
   margin-top:10px;
+
+  :hover{
+	color:#8BDBAD;
+
+  }
 
   .signout{
      &:hover{

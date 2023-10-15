@@ -7,7 +7,6 @@ const Assignmentreport = () => {
   return (
     <Wrapper>
       <Assignmentreportmain/>
-        <Assignmentinfo/>
       
     </Wrapper>
   )

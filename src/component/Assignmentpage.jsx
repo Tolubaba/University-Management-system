@@ -12,13 +12,16 @@ import Assignmentreport from './Assignmentreport';
 import Assigmentedit from './Assigmentedit';
 import { useGlobalContext } from '../Context'
 import Back from './Back';
+import Assignmentinfo from './Assignmentinfo';
 
 
 
 
 const  Asignmentpage = () => {
 
-  const {}=useGlobalContext();
+const {id}=useParams()
+
+  console.log( 'params',id)
 
   
   const navigate=useNavigate()
@@ -42,9 +45,13 @@ const change=(index)=>{
         <Back/>
 
 
-        {page==0 &&<Assignmentmain/> }
+        {page==0 &&<Assignmentmain id={id}/> }
         {page==1 &&  <Assignmentreport/>}
-        {page==2 && <Assigmentedit/>}
+        {page==2 && <Assigmentedit id={id}/>}
+
+        <Assignmentinfo/>
+
+
 
         
       

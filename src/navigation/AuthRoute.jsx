@@ -7,6 +7,7 @@ import { styled } from "styled-components";
 import { BrowserRouter } from "react-router-dom";
 import { useGlobalContext } from "../Context";
 import Loginpage from "../component/Loginpage";
+import Error from "./Error";
 
 const AuthRoute = () => {
   const { assignmodal, user } = useGlobalContext();
@@ -20,6 +21,7 @@ const AuthRoute = () => {
               path="/"
               element={<Loginpage />}
             />
+            <Route path="*" element={<Error />} />
           </Routes>
         </div>
       {/* </BrowserRouter> */}

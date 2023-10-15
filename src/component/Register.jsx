@@ -40,7 +40,9 @@ const Register = () => {
 
             <div className='select'>
                 <label> select your role</label>
-                <select value={RegisterData.role} onChange={registerchange}>
+                <select value={RegisterData.role} 
+                name='role'
+                onChange={registerchange}>
                     {roles.map((item)=>{
                         return <option> {item.value}</option>
                     })}

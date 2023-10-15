@@ -7,6 +7,7 @@ import { Courses } from "./Data";
 import { Semester } from "./Data";
 import TimePicker from "react-time-picker";
 import { useGlobalContext } from "../Context";
+import { collection, addDoc } from "firebase/firestore"; 
 
 const Addnewassigment = () => {
   const {
