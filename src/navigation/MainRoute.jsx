@@ -6,6 +6,7 @@ import {
   Attendance,
   MyAcocount,
   Marks,
+  Assignment2,
 } from "../component";
 import { useState, useEffect } from "react";
 import Sidebar from "../Sidebar";
@@ -18,6 +19,7 @@ import Assignment from "../component/Assignment";
 import Addnewassigment from "../component/Addnewassigment";
 // import { useGlobalContext } from './Context'
 import Asignmentpage from "../component/Assignmentpage";
+import Studentassigmentdetail from "../component/Studentassigmentdetail";
 // import { useGlobalcontext } from './UseContext'
 import { BrowserRouter } from "react-router-dom";
 import { useGlobalContext } from "../Context";
@@ -27,9 +29,13 @@ import Login from "../component/Login";
 import Register from "../component/Register";
 import Loginpage from "../component/Loginpage";
 import Registercourse from "../component/Registercourse";
+import Attendance2 from "../component/Attendance2";
+import Adminpage from "../component/Adminpage";
+
 
 const MainRoute = () => {
-  const { assignmodal, user } = useGlobalContext();
+  const { assignmodal, user,userInfo } = useGlobalContext();
+  console.log(userInfo.role)
   const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
   return (
     <Wrapper>
@@ -44,9 +50,11 @@ const MainRoute = () => {
           <div className="otherapp">
             <Routes>
               <Route
-                path="/myaccount"
+                path="/"
                 element={<MyAcocount />}
               />
+
+              <Route path="/attendance2" element={<Attendance2/>}/>
               <Route
                 path="/attendance"
                 element={<Attendance />}
@@ -67,9 +75,14 @@ const MainRoute = () => {
                 path="/editprofile"
                 element={<Editprofile />}
               />
+              
               <Route
                 path="/assignmnet"
                 element={<Assignment />}
+              />
+              <Route
+                path="/assignmnet2"
+                element={<Assignment2 />}
               />
               <Route
                 path="/assignmentpage/:id"
@@ -81,7 +94,12 @@ const MainRoute = () => {
               />
 
               <Route path="/registercourse" element={<Registercourse/>}/>
+
+              <Route path="/studentassignmentdetails/:id" element={<Studentassigmentdetail/>}/>
+              <Route path="/adminpage" element={<Adminpage/>}/>
+
             </Routes>
+
           </div>
         </article>
       {/* </BrowserRouter> */}

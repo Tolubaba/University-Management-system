@@ -21,12 +21,13 @@ import {
   where,
 } from "firebase/firestore";
 
-const Attendancereport = () => {
+const Attendance2 = () => {
   const [levelCourses, setLevelCourses] = useState([{ code: "SELECT" }]);
   const [attendanceCourse, setAttendanceCourse] = useState("");
   const [levelIs, setLevelIs] = useState("");
   const [studentsOffering, setStudentsOffering] = useState([]);
   const [studentsInformation, setStudentsInformation] = useState({});
+  const user=auth.currentUser;
 
   function handleSelectChange(e) {
     if (e.target.name == "level") {
@@ -81,6 +82,20 @@ const Attendancereport = () => {
         console.log("temp students is:");
         console.log(tempStudents);
         setStudentsInformation(tempStudents);
+
+        if(Object.keys(tempStudents).includes(user.uid)){
+            setStudentsInformation(tempStudents[user.uid]);
+        }
+        else{
+            setStudentsInformation({
+                name: user.displayName,
+                present: 0,
+                absent: 0,
+                late: 0,
+                sick: 0,
+                permit: 0
+            })
+        }
     }
     else{
         console.log("Error getting the document");
@@ -89,6 +104,8 @@ const Attendancereport = () => {
   return (
     <Wrapper>
       <GlobalStyles />
+
+      <h2> View your attendance status </h2>
       <section className="mainreport">
 
 
@@ -126,7 +143,7 @@ const Attendancereport = () => {
           onChange={handleSelectChange}
         >
           {levelCourses.map((option, index) => {
-            return <option key={index}>{option.code}</option>;
+            return <option className="classoption" key={index}>{option.code}</option>;
           })}
         </select>
       </div>
@@ -170,7 +187,15 @@ const Attendancereport = () => {
             </tr>
         </thead>
         <tbody>
-            {
+        <tr>
+                        <td>{attendanceCourse}</td>
+                        <td>{studentsInformation?.present}</td>
+                        <td>{studentsInformation?.absent}</td>
+                        <td>{studentsInformation?.late}</td>
+                        <td>{studentsInformation?.sick}</td>
+                        <td>{studentsInformation?.permit}</td>
+                    </tr>
+            {/* {
                 Object.keys(studentsInformation).map((stud, index) => {
                     return <tr key={index}>
                         <td>{studentsInformation[stud].name}</td>
@@ -181,7 +206,7 @@ const Attendancereport = () => {
                         <td>{studentsInformation[stud].permit}</td>
                     </tr>
                 })
-            }
+            } */}
         </tbody>
       </table>
     </Wrapper>
@@ -190,8 +215,16 @@ const Attendancereport = () => {
 
 const Wrapper = styled.section`
   font-family: var(--fontfamily);
-  margin-top: 20px;
-  padding-top: 15px;
+  margin-top: 10px;
+  padding-top: 1px;
+
+  h2{
+    text-transform:uppercase;
+    
+    margin-bottom:30px;
+    font-size: 30px;
+      font-weight: 700;
+  }
 
   .mainreport{
 
@@ -260,7 +293,7 @@ table {
 
   table td {
     padding: 10px;
-    text-transform: capitalize;
+    text-transform: uppercase;
     font-size: 14px;
   }
  
@@ -270,18 +303,19 @@ table {
   }
 
 
-  .selectass {
-    width: 100%;
+
+
+.classoption{
+  text-transform:uppercase;
+}
+
+.selectass {
+    width: 120px;
     height: 30px;
     outline: none;
     text-transform:uppercase;
-    width:120px;
   }
-
-
-
-
 
 `;
 
-export default Attendancereport;
+export default Attendance2;

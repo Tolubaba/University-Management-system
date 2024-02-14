@@ -1,18 +1,16 @@
 import React, {useState} from 'react'
 
-function Status({setStudents, student, num}) {
+function Status({setStudents, student, num, updateStatus}) {
     const [prevElement, setPrevElement] = useState(null);
   
-    function changeStatus(name, status, prevElem) {
+    function changeStatus(name, status, prevElem, id) {
       if (prevElement) {
           prevElement.style.backgroundColor = "white";
         prevElement.id = "";
       }
       setPrevElement(prevElem);
 
-      setStudents((prevStudents) => {
-        return {...prevStudents, name:status};
-      });
+      updateStatus(name, status, id);
     }
   return (
     <tr style={{backgroundColor: `${num%2 === 0? "white":"#F8F9FB"}`}}>
@@ -28,7 +26,7 @@ function Status({setStudents, student, num}) {
                   onClick={(e) => {
                     (e.target.style.backgroundColor = "#53DD94"),
                     e.target.id = "active-status",
-                      changeStatus(student.name, "present", e.target);
+                      changeStatus(student.name, "present", e.target, student.id);
                   }}
                 >
                   <div className="circle" onClick={(e) => e.stopPropagation()}></div>Present
@@ -38,7 +36,7 @@ function Status({setStudents, student, num}) {
                   onClick={(e) => {
                     (e.target.style.backgroundColor = "#E2DE7B"),
                     e.target.id = "active-status",
-                      changeStatus(student.name, "present", e.target);
+                      changeStatus(student.name, "late", e.target, student.id);
                   }}
                 >
                   <div className="circle" onClick={(e) => e.stopPropagation()}></div>Late
@@ -48,7 +46,7 @@ function Status({setStudents, student, num}) {
                   onClick={(e) => {
                     (e.target.style.backgroundColor = "#E35959"),
                     e.target.id = "active-status",
-                      changeStatus(student.name, "present", e.target);
+                      changeStatus(student.name, "absent", e.target, student.id);
                   }}
                 >
                   <div className="circle" onClick={(e) => e.stopPropagation()}></div>Absent
@@ -58,7 +56,7 @@ function Status({setStudents, student, num}) {
                   onClick={(e) => {
                     (e.target.style.backgroundColor = "#E3AD59"),
                     e.target.id = "active-status",
-                      changeStatus(student.name, "present", e.target);
+                      changeStatus(student.name, "sick", e.target, student.id);
                   }}
                 >
                   <div className="circle" onClick={(e) => e.stopPropagation()}></div>Sick
@@ -68,7 +66,7 @@ function Status({setStudents, student, num}) {
                   onClick={(e) => {
                     (e.target.style.backgroundColor = "#aaaaaa"),
                     e.target.id = "active-status",
-                      changeStatus(student.name, "present", e.target);
+                      changeStatus(student.name, "permit", e.target, student.id);
                   }}
                 >
                   <div className="circle" onClick={(e) => e.stopPropagation()}></div>Permit

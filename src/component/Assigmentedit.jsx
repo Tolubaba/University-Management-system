@@ -8,28 +8,10 @@ import { auth, db } from "../component/firbaseconfig";
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 
 
-const Assigmentedit = ({id}) => {
+const Assigmentedit = ({selecteds,id}) => {
   const { formResponses,editsubmit ,handleeditchange,editid,getselected,editdata} = useGlobalContext();
 
-  const user = auth.currentUser
-  let assignmentsRef = collection(db, "assignments")
-  let documentRef = doc(assignmentsRef, user ? user.uid : "x")
-  let coll = collection(documentRef, "assignment");
-  const [selecteds, setselecteds] = useState({
-    title: "",
-    description: "",
-    date: "",
-    time:""
-  })
-
-  const assignmentQuery = doc(coll, id)
-  const [assignmentSnapshot, loading, error] = useDocument(assignmentQuery)
-
-  useEffect(() => {
-    if (assignmentSnapshot) {
-       setselecteds({...selecteds,...assignmentSnapshot.data()})
-    }
-  }, [assignmentSnapshot])
+  
 
   console.log(selecteds)
 
@@ -42,7 +24,7 @@ const Assigmentedit = ({id}) => {
   return (
     <Wrapper>
       
-        <form onSubmit={editsubmit}>
+        <form onSubmit={(e)=>editsubmit(e,id)}>
         <section className="editmain">
           <div className="title">
             <label className="label"> Title</label>
@@ -86,7 +68,7 @@ const Assigmentedit = ({id}) => {
               type="time"
               id="timeInput"
               name="time"
-              value={ editdata.time}
+              value={editdata.time}
               onChange={handleeditchange}
               required
             />

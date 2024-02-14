@@ -1,19 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Students } from "./Data";
 import { styled } from "styled-components";
 import Status from "./Status";
 
-function AttendanceTakeRender() {
+function AttendanceTakeRender({studentsInformation, setStudentsInformation}) {
   const [prevElement, setPrevElement] = useState(null);
-  const [students, setStudents] = useState(Students);
+/*   const [students, setStudents] = useState([]);
 
-  function changeStatus(name, status, prevElem) {
-    if (prevElement) {
-        prevElement.style.backgroundColor = "white";
-      prevElement.id = "";
-    }
-    setPrevElement(prevElem);
+  useEffect(() => {
+    setStudents(studentsInformation);
+  }, [studentsInformation,students]); */
+
+  function updateStatus(name, status, id) {
+    let newStudentsInformation = studentsInformation.map((student) => {
+      if(student.name == name){
+        return {name: student.name, status: status, id: id};
+      }
+      else{
+        return student
+      }
+    });
+    setStudentsInformation(newStudentsInformation);
+    console.log(studentsInformation);
   }
+
+  
 
   return (
     <Wrapper>
@@ -22,9 +33,9 @@ function AttendanceTakeRender() {
           <th>Student</th>
           <th>Status</th>
         </tr>
-        {Students.map((student, index) => {
+         {studentsInformation.map((student, index) => {
           return (
-            <Status key={index} setStudents={setStudents} student={student} num={index}/>
+            <Status key={index} setStudents={setStudentsInformation} student={student} num={index} updateStatus={updateStatus}/>
           );
         })}
       </table>
@@ -40,6 +51,7 @@ const Wrapper = styled.section`
   }
 
   table{
+    width: 100%;
     border-collapse: collapse;
     margin: 30px 0;
   }

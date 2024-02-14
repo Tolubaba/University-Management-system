@@ -1,108 +1,39 @@
 import React, { useState } from "react";
-import { styled } from "styled-components";
-import GlobalStyles from "./GlobalStyles";
-import { entries } from "./Data";
-import { assigment } from "./Data";
-import {
-  useReactTable,
-  flexRender,
-  getCoreRowModel,
-} from "@tanstack/react-table";
-import { useMemo, useEffect } from "react";
-import { useGlobalContext } from "../Context";
+import styled from "styled-components";
+import { auth } from "./firbaseconfig";
+import { studentassignment } from "./Data";
 import { Link } from "react-router-dom";
-import {
-  setDoc,
-  doc,
-  addDoc,
-  collection,
-  updateDoc,
-  deleteDoc,
-  query,
-} from "firebase/firestore";
-import { auth, db } from "../component/firbaseconfig";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useGlobalContext } from "../Context";
 
-const columns = [
-  {
-    header: "Title",
-    accessorKey: "title",
-  },
-  {
-    header: "level",
-    accessorKey: "level",
-  },
-  {
-    header: "Course",
-    accessorKey: "Course",
-  },
-  {
-    header: "DueDate",
-    accessorKey: "DueDate",
-  },
-];
-
-const Assignment = () => {
-
+const Assignment2 = () => {
+  const user = auth.currentUser;
   const [searchTerm, setSearchTerm] = useState('');
 
-  
-  const {
-    openassmodal,
-    formResponses,
-    assignmentsResponse,
-    view,
-    selected,
-    deleteass,
-    assignments,
-  } = useGlobalContext();
+  const { assignments, selectedCourses,mode ,answers} = useGlobalContext();
+  console.log("Selected Courses: ", selectedCourses);
 
-  const data = useMemo(() => assigment, []);
-  const user = auth.currentUser;
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+  const courses = selectedCourses.map((item) => item.code.toLowerCase());
+  console.log("Courses: ", courses);
 
   const filteredAssignments = assignments.filter((item) => {
-    return  item.data().uid==user.uid && item.data().title.toLowerCase().includes(searchTerm.toLowerCase());
-  });
+
+  const courses = selectedCourses.map((item) => item.code.toLowerCase());
+  return courses.includes(item.data().course.toLowerCase()) && item.data().title.toLowerCase().includes(searchTerm.toLowerCase())
+});
+  
 
   return (
     <Wrapper>
-      <GlobalStyles />
       <section className="assbegin">
         <div className="assmain">
-          <h2> Assignment </h2>
+          <h2> My Assignments </h2>
 
           {user ? <p> {user.displayName}</p> : ""}
         </div>
-
-        <div className="assbtn">
-          <button onClick={openassmodal}> add new </button>
-        </div>
       </section>
-
-      <section className="asssecond">
-        <div className="assselect">
-          <label> show</label>
-          <select className="asstake">
-            {entries.map((option, index) => {
-              return <option key={index}>{option.value}</option>;
-            })}
-          </select>
-          <p> entries</p>
-        </div>
-
-        <div className="assinput">
+      <div className="search">
+        
+      <div className="assinput">
           <label> Search</label>:
           <input
             className="assinputmain"
@@ -111,74 +42,73 @@ const Assignment = () => {
             onChange={(e)=>setSearchTerm(e.target.value)}
           />
         </div>
-      </section>
+      </div>
 
       <section className="tablesection">
         <table className="table">
           <thead>
             <tr>
-              {/* <th>ID</th> */}
               <th>Title</th>
               <th>Level</th>
               <th>Course</th>
               <th>Due Date</th>
+              <th> lecturer</th>
               <th> Options</th>
               <th> Status</th>
-
             </tr>
           </thead>
           <tbody>
-            {assignments &&
-              filteredAssignments.map((assignment, index) => {
-
-                const combinedDateTimeString = `${assignment.data().date}T${assignment.data().time}:00`;
+            {filteredAssignments &&
+              filteredAssignments.map((item, index) => {
+                console.log("start");
+                const combinedDateTimeString = `${item.data().date}T${item.data().time}:00`;
                 const combinedDateTime = new Date(combinedDateTimeString).getTime();
                 const timetoday= new Date().getTime()
                 console.log(timetoday)
                 console.log(combinedDateTime)
                 console.log("end", index);
 
-               
-            return <tr key={index}>
-                  {/* <td>{assignment.data().id}</td> */}
-                  <td>{assignment.data().title}</td>
-                  <td>{assignment.data().level}</td>
+                
+
+               const filteredAnswer = answers.filter((itemss) => {
+                return  itemss.data().studentid==user.uid;
+              });
+
+              const filteredAnswers = filteredAnswer.filter((items) => {
+                  return items.data().assigmentid === item.data().id;
+              });
+
+
+              const status = filteredAnswers.map(item => item.data().status);
+   return <tr key={index}>
+                  <td>{item.data().title}</td>
+                  <td>{item.data().level}</td>
                   <td
                     style={{
                       textTransform: "uppercase",
                     }}
                   >
-                    {assignment.data().course}
+                    {item.data().course}
                   </td>
                   <td className="duedate">
-                    <button>{assignment.data().date} </button>
+    
+                    <button>{item.data().date} </button>
                   </td>
-                  <td className="lasttd">
-                    <Link to={`/assignmentpage/${assignment.data().id}`}>
-                      {" "}
-                      <button
-                        className="viewbtn"
-                        onClick={() => view(assignment.data().id)}
-                      >
-                        View
-                      </button>
-                    </Link>
+                  <td>{item.data().Lecturer}</td>
+                  <td>
 
-                    <button
-                      className="deletebtn"
-                      onClick={() => deleteass(assignment.data().id)}
-                    >
-                      Delete
-                    </button>
+                    { timetoday<=combinedDateTime ? <Link to={`/studentassignmentdetails/${item.data().id}`}>
+                      <button className="viewbtn"> view details</button>
+                    </Link>: <button className="expired"> expired</button>}
+                    
+                    
                   </td>
-                  <td>{timetoday<=combinedDateTime ? <button className="statusbtn1" >ongoing  </button> :<button className="expired"> expired </button>}
- </td>
+                  {!status[0]?<td> <button className="statusbtn"> not submitted</button></td>:<td> <button className="statusbtn1"> submitted</button></td>}
+                 
                 </tr>
               })}
           </tbody>
         </table>
-
-      
       </section>
     </Wrapper>
   );
@@ -270,6 +200,7 @@ const Wrapper = styled.section`
 
     font-size: 15px;
     font-weight: 700;
+    text-transform:capitalize;
   }
 
   table td {
@@ -282,21 +213,58 @@ const Wrapper = styled.section`
   }
   table button {
     display: block;
-  
   }
 
-  /* Style the last td (cell) in each row */
-  .lasttd {
-    /* Your CSS styles for the last cell */
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    /* Example background color */
-    /* Add any other styles you want for the last cell */
+  .statusbtn{
+    width: 100px;
+    height: 28px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size:12px;
+    color: #86a6ec;
+    background-color: #ecf0f9;
+    border:1px solid ;
+    padding: 0 5px;
+    text-transform:capitalize;
+    background-color: #ed4e51;
+    color: white;
+
+
+
+   
     a {
       text-decoration: none;
     }
   }
+  .statusbtn1{
+    width: 100px;
+    height: 28px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size:14px;
+    border:1px solid ; 
+    padding: 0 5px;
+    text-transform:capitalize;
+    background-color: #8bdbad;
+    color:white;
+
+   
+    a {
+      text-decoration: none;
+    }
+  }
+
+  table tr td:nth-last-child(2) {
+  /* Your CSS styles for the second-to-last cell */
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  /* Add any other styles you want for the second-to-last cell */
+  a {
+    text-decoration: none;
+  }
+}
+
 
   .viewbtn {
     width: 50px;
@@ -311,6 +279,17 @@ const Wrapper = styled.section`
       color: white;
       background-color: #86a6ec;
     }
+  }
+  .expired {
+    width: 100px;
+    height: 28px;
+    border-radius: 3px;
+    font-weight: 700;
+    border:none;
+    text-transform:capitalize;
+    background-color: #ed4e51;
+    color: white;
+
   }
 
   .deletebtn {
@@ -344,36 +323,42 @@ const Wrapper = styled.section`
       background-color: #ed4e51;
     }
   }
-
-  .expired {
+  .viewbtn {
     width: 100px;
     height: 28px;
     border-radius: 3px;
+    border: 1px solid #86a6ec;
     font-weight: 700;
-    border:none;
-    text-transform:capitalize;
-    background-color: #ed4e51;
-    color: white;
+    color: #86a6ec;
+    background-color: #ecf0f9;
 
-  }
-
-.statusbtn1{
-    width: 100px;
-    height: 28px;
-    border-radius: 3px;
-    font-weight: 700;
-    font-size:14px;
-    border:1px solid ;
-    padding: 0 5px;
-    text-transform:capitalize;
-    background-color: #8bdbad;
-    color:white;
-
-   
-    a {
-      text-decoration: none;
+    &:hover {
+      color: white;
+      background-color: #86a6ec;
     }
   }
-  
+
+  .duedate button {
+    width: 100px;
+    border-radius: 3px;
+    font-weight: 700;
+    color: #ed4e51;
+    background-color: #fdf0f1;
+    border: none;
+    height: 30px;
+    font-size: 12px;
+    font-weight: 700;
+
+    &:hover {
+      color: white;
+      background-color: #ed4e51;
+    }
+  }
+
+  .search{
+    display:flex;
+    justify-content:end;
+  }
 `;
-export default Assignment;
+
+export default Assignment2;

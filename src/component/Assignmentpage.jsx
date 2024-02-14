@@ -3,7 +3,7 @@ import { styled } from 'styled-components'
 import { FaLongArrowAltLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { home } from './Data';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { assigment } from './Data';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,9 @@ import Assignmentreport from './Assignmentreport';
 import Assigmentedit from './Assigmentedit';
 import { useGlobalContext } from '../Context'
 import Back from './Back';
+import { setDoc, doc, addDoc, collection, updateDoc, deleteDoc, query } from "firebase/firestore";
+import { auth, db } from "../component/firbaseconfig";
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 import Assignmentinfo from './Assignmentinfo';
 
 
@@ -31,6 +34,24 @@ const change=(index)=>{
 
   }
 
+  const user = auth.currentUser
+  let assignmentsRef = collection(db, "assignments")
+  const [selecteds, setselecteds] = useState({
+    title: "",
+    description: "",
+    date: "",
+    time:""
+  })
+
+  const assignmentQuery = doc(assignmentsRef, id)
+  const [assignmentSnapshot, loading, error] = useDocument(assignmentQuery)
+
+  useEffect(() => {
+    if (assignmentSnapshot) {
+       setselecteds({...selecteds,...assignmentSnapshot.data()})
+    }
+  }, [assignmentSnapshot])
+
 
   return (
     <Wrapper>
@@ -45,11 +66,11 @@ const change=(index)=>{
         <Back/>
 
 
-        {page==0 &&<Assignmentmain id={id}/> }
-        {page==1 &&  <Assignmentreport/>}
-        {page==2 && <Assigmentedit id={id}/>}
+        {page==0 &&<Assignmentmain selecteds={selecteds}/> }
+        {page==1 &&  <Assignmentreport id={id}/>}
+        {page==2 && <Assigmentedit selecteds={selecteds} id={id}/>}
 
-        <Assignmentinfo/>
+        <Assignmentinfo selecteds={selecteds}/>
 
 
 

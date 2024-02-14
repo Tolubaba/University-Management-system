@@ -10,37 +10,15 @@ import { setDoc, doc, addDoc, collection, updateDoc, deleteDoc, query } from "fi
 import { auth, db } from "../component/firbaseconfig";
 import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 
-const Assignmentmain = ({id}) => {
+const Assignmentmain = ({selecteds}) => {
 
   // const { formResponses, selected,assignments } = useGlobalContext();
-
   let date;
   let time;
   let submissionDate;
 
 
-  const user = auth.currentUser
-  let assignmentsRef = collection(db, "assignments")
-  let documentRef = doc(assignmentsRef, user ? user.uid : "x")
-  let coll = collection(documentRef, "assignment");
-  const [selecteds, setselecteds] = useState({
-    title: "",
-    description: "",
-    date: "",
-    time:""
-  })
-
-  const assignmentQuery = doc(coll, id)
-  const [assignmentSnapshot, loading, error] = useDocument(assignmentQuery)
-
-  useEffect(() => {
-    if (assignmentSnapshot) {
-       setselecteds({...selecteds,...assignmentSnapshot.data()})
-    }
-  }, [assignmentSnapshot])
-
-  console.log(selecteds)
-
+  
 
 
 
@@ -71,8 +49,8 @@ if (selecteds.time && selecteds.date){
 return (
     <Wrapper>
       <section className="secondpage">
-        <h2>{ selecteds && selecteds.title}</h2>
-        <p className="descword">{ selecteds && selecteds.description} </p>
+        <h3> Title: { selecteds && selecteds.title}</h3>
+        <p className="descword"> <h3> Description: </h3> { selecteds && selecteds.description} </p>
 
         <div>
           {selecteds.date && (
@@ -92,7 +70,6 @@ return (
         <p className="submissiondate">Submission date is  {  submissionDate &&submissionDate.toLocaleString()}</p>
       </section>
 
-      <Assignmentinfo selecteds={selecteds}/>
     </Wrapper>
   );
 };
@@ -114,6 +91,9 @@ const Wrapper = styled.section`
   .descword {
     font-size: 17px;
     line-height: 25px;
+    h3{
+      display:inline-block;
+    }
   }
 
   .deliverdate {

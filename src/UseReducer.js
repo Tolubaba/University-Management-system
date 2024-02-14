@@ -21,6 +21,12 @@ const reducer = (state, action) => {
   if (action.type === "FILE") {
     return { ...state, selectedFile: action.payload };
   }
+  if (action.type === "STUDENT_FILE") {
+    return { ...state, studentanswerfile: action.payload };
+  }
+  if (action.type === "IMAGE_FILE") {
+    return { ...state, editprofileimage: action.payload };
+  }
 
   if (action.type === "SUBMIT") {
     const newResponse = {
@@ -61,24 +67,25 @@ const reducer = (state, action) => {
     return { ...state, editdata: { ...action.payload } };
   }
 
+  if (action.type=='ANSWER_SELECTED'){
+    return {...state,editanswer:{...action.payload}}
+  }
+
   if (action.type === "EDITDATA") {
     return { ...state, editdata: { ...state.editdata, ...action.payload } };
   }
-  if (action.type === "UPDATE_EDIT") {
-    const dataarray = state.formResponses.map((item) =>
-      item.id === action.payload.id ? action.payload : item
-    );
-    console.log(dataarray);
-
-    return { ...state, formResponses: dataarray };
+  
+  if (action.type === "EDIT_ANSWER") {
+    return { ...state, editanswer: { ...state.editanswer, ...action.payload } };
   }
+  
 
-  if (action.type === "DETAILVIEW") {
-    return {
-      ...state,
-      detailselect: state.Item.find((item) => item.id == action.payload),
-    };
-  }
+  // if (action.type === "DETAILVIEW") {
+  //   return {
+  //     ...state,
+  //     detailselect: state.Item.find((item) => item.id == action.payload),
+  //   };
+  // }
 
   if (action.type === "INFO_CHANGE") {
     return { ...state, infoData: { ...state.infoData, ...action.payload } };
@@ -113,6 +120,10 @@ const reducer = (state, action) => {
         lastname: "",
         password: "",
         role: "Select",
+        level:'Select',
+        matricnumber:"",
+        phonenumber: "",
+        Regstatus: false
       },
     };
   }
@@ -127,13 +138,31 @@ const reducer = (state, action) => {
   }
 
 
-  if(action.type==='FETCHASS'){
-    return {...state}
-  }
-// if(action.type==='SET_ASSIGNMENTS'){
-//     return { ...state, assignments: action.payload };
+  if (action.type === "STUDENT_ANSWER") {
+    return { ...state, studentsolution:{ ...state.studentsolution, ...action.payload } };
 
-// }
+  }
+
+  if (action.type === "EDIT_PROFILE") {
+    return { ...state, editprofile:{ ...state.editprofile, ...action.payload } };
+  }
+
+  if(action.type ==='EDIT_EMPTY'){
+    return { ...state, editprofile: {
+      firstname: "",
+      lastname: "",
+      email: "",
+    }, };
+
+  }
+
+  if(action.type==='ANSWER_EMPTY'){
+    return {...state, studentsolution: {
+      answertext: " ",
+      file: "",
+      comment: "",
+    }}
+  }
   return state;
 };
 

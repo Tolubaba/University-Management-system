@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { useGlobalContext } from "../Context";
 import Loginpage from "../component/Loginpage";
 import Error from "./Error";
+import Pending from "../component/Pending";
 
 const AuthRoute = () => {
   const { assignmodal, user } = useGlobalContext();
@@ -21,6 +22,7 @@ const AuthRoute = () => {
               path="/"
               element={<Loginpage />}
             />
+            <Route path="/pending" element={<Pending/>}/>
             <Route path="*" element={<Error />} />
           </Routes>
         </div>

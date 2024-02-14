@@ -61,6 +61,7 @@ font-family:var(--fontfamily);
 
     p{ font-weight:500;
       font-size:14px;
+      text-transform:uppercase;
     
     }
 

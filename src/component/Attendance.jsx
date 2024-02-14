@@ -92,6 +92,13 @@ const Wrapper= styled.section`
   padding:20px ;
 
   }
+
+  .selectass {
+    width: 120px;;
+    height: 30px;
+    outline: none;
+    text-transform:uppercase;
+  }
 `
 
 

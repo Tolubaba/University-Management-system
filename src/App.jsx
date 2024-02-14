@@ -35,6 +35,7 @@ import AuthRoute from "./navigation/AuthRoute";
 const App = () => {
   const { assignmodal, user } = useGlobalContext();
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  console.log(isLoggedIn);
   return (
     <Wrapper>
       <BrowserRouter>

@@ -2,11 +2,14 @@ import React from 'react'
 import { styled } from 'styled-components'
 import Assignmentinfo from './Assignmentinfo'
 import Assignmentreportmain from './Assignmentreportmain'
+import { useGlobalContext } from '../Context'
 
-const Assignmentreport = () => {
+const Assignmentreport = ({id}) => {
+
+  const {answers}=useGlobalContext()
   return (
     <Wrapper>
-      <Assignmentreportmain/>
+      <Assignmentreportmain id={id}/>
       
     </Wrapper>
   )
