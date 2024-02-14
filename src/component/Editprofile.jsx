@@ -1,42 +1,37 @@
 import React from 'react'
 import { styled } from 'styled-components'
 import GlobalStyles from './GlobalStyles'
+import { useGlobalContext } from '../Context'
 
 const Editprofile = () => {
+
+ const {editprofile, editfilechange, editprofilesubmit,     editprofilechange
+
+
+    }=useGlobalContext()
   return (
     <Wrapper>
         <GlobalStyles/>
 
-        <form className='formmain'>
+        <h2> EDIT YOUR PROFILE</h2>
+
+        <form className='formmain' onSubmit={editprofilesubmit}>
            
 
-            <div className='lastname'>
+            <div className='firstname'>
+                <label className='label'>first name</label>
+            <input type='text' placeholder='Toluwase' value={editprofile.firstname} onChange={editprofilechange} name='firstname'/>
+
+            </div>
+            <div className='firstname'>
                 <label className='label'>last name</label>
-            <input type='text' placeholder='Orogbemi'/>
+            <input type='text' placeholder='Orogbemi' value={editprofile.lastname} onChange={editprofilechange} name='lastname'/>
 
             </div>
 
             <div className='formemail'>
                 <label className='label'> email</label>
-            <input type='Email' placeholder='orogbemi4@gmail.com'/>
-            </div>
-
-            <div className='formpassword'>
-                <label className='label'> password</label>
-            <input type='password'/>
-
-            </div>
-            <div className='confirmpassword'>
-                <label className='label'> confirm password</label>
-            <input type='password'/>
-
-            </div>
-            <div>
-                <label className='label'> Bio information</label>
-            <textarea>
-
-            </textarea>
-
+            <input type='Email' name='email' placeholder='orogbemi4@gmail.com'  value={editprofile.email} onChange={editprofilechange}/>
             </div>
 
             <div className='profileimage'>
@@ -44,13 +39,13 @@ const Editprofile = () => {
   type="file"
   accept="image/*"
   id="imageInput"
-  style={{ display: 'none' }} // Hide the input visually
+  style={{ display: 'none' }}  onChange={editfilechange}// Hide the input visually
 />
 <label htmlFor="imageInput" className="upload-label">
   Upload Image
 </label>
 
-            </div>
+</div>
            
             
   
@@ -105,7 +100,7 @@ textarea{
     width:100%;
     display:block;
     height:70px;
-    margin-bottom:10px;
+    margin-bottom:15px;
     border-radius:4px;
     outline:none;
     padding-left:10px;
@@ -147,6 +142,16 @@ button{
     text-transform:uppercase;
 }
 
+
+h2{
+
+    font-family:var(--fontfamily);
+
+height:40px;
+
+display:flex;
+text-transform:uppercase;
+}
 `
     
 

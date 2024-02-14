@@ -4,10 +4,29 @@ import Assignmentinfo from './Assignmentinfo';
 import { People } from './Data';
 import { PeopleWithIds } from './Data';
 import { Link } from 'react-router-dom';
+import { useGlobalContext } from '../Context';
+import { auth } from './firbaseconfig';
 
-const Assignmentreportmain = () => {
+
+const Assignmentreportmain = ({id}) => {
+
+    const user = auth.currentUser;
+
+    console.log(user.uid)
+
+    const {answers}=useGlobalContext()
+
+    const filteredAnswers = answers.filter((item) => (
+        // Check if item has a data method and studentid property
+        item.data && item.data().assigmentid ==id
+      ));
+      
+
+    console.log(id)
   return (
     <Wrapper>
+
+    
         <section className='repoermain'> 
 
             <table className='maintable'>
@@ -23,13 +42,13 @@ const Assignmentreportmain = () => {
                 </thead>
                 <tbody>
 
-                    {PeopleWithIds.map((item,index)=>(
+                    {filteredAnswers.map((item,index)=>(
                             <tr key={index}>
-                                <td> {item.name}</td>
-                                <td>{item.matric_no}</td>
-                                <td>{item.status ? <div className='on-time'>On Time</div> : <div className='late'>Late</div>}</td>
-                                <td> <Link to={`/detailmain/${item.id}`}>  <div className='detail' >{item.detail}</div> </Link></td>
-                                <td>{item.mark}</td>
+                                <td> {item.data().name}</td>
+                                <td>{item.data().matricnumber}</td>
+                                <td>{item.data().status ? <div className='on-time'>On Time</div> : <div className='late'>Late</div>}</td>
+                                <td> <Link to={`/detailmain/${item.data().id}`}>  <div className='detail' > <p>item detail</p></div> </Link></td>
+                                <td>{item.data().mark}</td>
 
                             </tr>
                         
@@ -40,6 +59,7 @@ const Assignmentreportmain = () => {
             </table>
 
         </section>
+
       
     </Wrapper>
   )

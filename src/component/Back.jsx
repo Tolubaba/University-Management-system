@@ -12,7 +12,8 @@ return (
     <Wrapper>
 
 <div className='back'>
-  <Link to='/' onClick={() => navigate(-1)} >  <button> <FaLongArrowAltLeft /> back</button>  </Link> 
+    <button onClick={() => navigate(-1)} > <FaLongArrowAltLeft /> back</button>  
+  {/* <Link to='/' onClick={() => navigate(-1)} >  <button> <FaLongArrowAltLeft /> back</button>  </Link>  */}
 
         </div>
 

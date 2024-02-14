@@ -2,11 +2,13 @@ import React from "react";
 import { styled } from "styled-components";
 import { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
-import { level } from "./Data";
+import { computerEngineeringcourses, level } from "./Data";
 import { Courses } from "./Data";
 import { Semester } from "./Data";
 import TimePicker from "react-time-picker";
 import { useGlobalContext } from "../Context";
+import { collection, addDoc } from "firebase/firestore"; 
+import { computerEngineeringCourses } from "./Data";
 
 const Addnewassigment = () => {
   const {
@@ -18,6 +20,12 @@ const Addnewassigment = () => {
     formResponses,
     handleSubmit,
   } = useGlobalContext();
+
+  console.log(formData.level)
+
+  const assignmentcourse= computerEngineeringcourses.filter(
+    (item) => item.level==formData.level && item.semester == formData.semester
+  );
 
   return (
     <Wrapper>
@@ -71,8 +79,8 @@ const Addnewassigment = () => {
                 onChange={handleChange}
                 required
               >
-                {Courses.map((option, index) => {
-                  return <option key={index}>{option.value}</option>;
+                {assignmentcourse.map((option, index) => {
+                  return <option key={index}>{option.code}</option>;
                 })}
               </select>
             </div>
@@ -139,7 +147,6 @@ const Addnewassigment = () => {
                   style={{ display: "none" }}
                 />
               </div>
-              <h2 className="max"> Max file to uplaod is 5mb</h2>
             </div>
           </section>
 
@@ -148,7 +155,6 @@ const Addnewassigment = () => {
               className="createbtn"
               type="submit"
             >
-              {" "}
               create
             </button>
           </div>
@@ -191,9 +197,9 @@ const Wrapper = styled.section`
 
   .assmain {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
     width: 100%;
+    align-items:center;
+    gap:2px;
     label {
       font-size: 14px;
     }
@@ -203,12 +209,14 @@ const Wrapper = styled.section`
     width: 100%;
     height: 30px;
     outline: none;
+    text-transform:uppercase;
   }
 
   .formfirst {
     display: flex;
     gap: 20px;
     margin-top: 20px;
+    align-items:center;
   }
 
   .formsecond {

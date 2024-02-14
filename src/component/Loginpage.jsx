@@ -7,14 +7,14 @@ import Register from './Register'
 
 const Loginpage = () => {
 
-    const {loginfalse,logintrue,login}=useGlobalContext();
+    const {goLogin}=useGlobalContext();
   return (
     <Wrapper>
         <Navbar/>
         <section>
 
-            { login && <Login/>}
-            {!login && <Register/>}
+            {!goLogin && <Login/>}
+            {goLogin && <Register/>}
 
         </section>
 

@@ -2,9 +2,9 @@ import React from 'react'
 import { styled } from 'styled-components'
 import { useGlobalContext } from '../Context'
 
-const Assignmentinfo = () => {
+const Assignmentinfo = ({selecteds}) => {
 
-  const { formResponses,selected}=useGlobalContext();  
+  const { formResponses}=useGlobalContext();  
   
   return (
     <Wrapper>
@@ -14,17 +14,17 @@ const Assignmentinfo = () => {
         <h2 className='information'> Homework information</h2>
         <div className='info'> 
           <h4> Course</h4> 
-          <p> {selected.course}</p>
+          <p> {selecteds.course}</p>
         </div>
 
         <div className='info'> 
           <h4> Level</h4> 
-          <p> {selected.level}</p>
+          <p> {selecteds.level}</p>
         </div>
 
         <div className='info'> 
           <h4> Semestser</h4> 
-          <p> {selected.semester}</p>
+          <p> {selecteds.semester}</p>
         </div>
         </section>
 
@@ -61,6 +61,7 @@ font-family:var(--fontfamily);
 
     p{ font-weight:500;
       font-size:14px;
+      text-transform:uppercase;
     
     }
 

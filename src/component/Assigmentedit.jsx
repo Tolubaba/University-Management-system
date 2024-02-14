@@ -2,22 +2,29 @@ import React from "react";
 import { styled } from "styled-components";
 import Assignmentinfo from "./Assignmentinfo";
 import { useGlobalContext } from "../Context";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
+import { setDoc, doc, addDoc, collection, updateDoc, deleteDoc, query } from "firebase/firestore";
+import { auth, db } from "../component/firbaseconfig";
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 
 
-const Assigmentedit = () => {
-  const { formResponses,editsubmit, selected ,handleeditchange,editid,getselected,editdata,hand} = useGlobalContext();
+const Assigmentedit = ({selecteds,id}) => {
+  const { formResponses,editsubmit ,handleeditchange,editid,getselected,editdata} = useGlobalContext();
 
+  
+
+  console.log(selecteds)
 
   useEffect(()=>{
-    getselected(selected)
+    getselected(selecteds)
     
   },[])
+
 
   return (
     <Wrapper>
       
-        <form onSubmit={editsubmit}>
+        <form onSubmit={(e)=>editsubmit(e,id)}>
         <section className="editmain">
           <div className="title">
             <label className="label"> Title</label>
@@ -61,7 +68,7 @@ const Assigmentedit = () => {
               type="time"
               id="timeInput"
               name="time"
-              value={ editdata.time}
+              value={editdata.time}
               onChange={handleeditchange}
               required
             />
@@ -74,7 +81,6 @@ const Assigmentedit = () => {
           </section>
 
         </form>
-      <Assignmentinfo />
     </Wrapper>
   );
 };

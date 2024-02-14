@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { styled } from 'styled-components'
+import futalogo from '../images/futalogo.jpg'
+
 
 const Navbar = () => {
 
@@ -9,7 +11,9 @@ const Navbar = () => {
     
     
         <nav>
-        <h2> Computer Engineering Management Sytem</h2>
+        <h2> Computer Engineering Management System</h2>
+
+        <img className='image' src={futalogo}/>
 
 
         
@@ -35,6 +39,16 @@ justify-content:center;
 align-items:center;
 text-transform:uppercase;
 color:#7BA1EB;
+nav{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.image{
+  width:40px;
+  height:40px;
+}
 
 
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "styled-components";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -6,59 +6,63 @@ import { useNavigate } from "react-router-dom";
 import { assigment } from "./Data";
 import Assignmentinfo from "./Assignmentinfo";
 import { useGlobalContext } from "../Context";
-import { useParams } from "react-router-dom";
+import { setDoc, doc, addDoc, collection, updateDoc, deleteDoc, query } from "firebase/firestore";
+import { auth, db } from "../component/firbaseconfig";
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
 
-const Assignmentmain = () => {
-  const { id } = useParams();
-  const { formResponses, selected } = useGlobalContext();
-  console.log(selected);
-  console.log(typeof selected.date);
+const Assignmentmain = ({selecteds}) => {
+
+  // const { formResponses, selected,assignments } = useGlobalContext();
   let date;
   let time;
   let submissionDate;
 
-  if(selected.date){
-    date = selected.date.split("-");
-    date.map((datee, index) => {
-      date[index] = Number(datee);
-    });
-  }
-  if (selected.time) {
-    time = selected.time.split(":").map((timee) => Number(timee));
-    // Now timeComponents is an array of numbers representing hours and minutes
-    console.log(time);
-  }
-  
-  
-  /* if(selected.time){
-  time=selected.time.split(":");
-  time.map((timee,index) => {
-    timee[index] = Number(timee);
-  });
-  } */
-  
-  if (selected.time && selected.date){
-    submissionDate = new Date(date[0], date[1]-1, date[2], time[0], time[1]);
-  }
-   
 
-  return (
+  
+
+
+
+   if(selecteds.date){
+    date = selecteds.date.split("-");
+  date.map((datee, index) => {
+     date[index] = Number(datee);
+ });
+ }
+  if (selecteds.time) {
+     time = selecteds.time.split(":").map((timee) => Number(timee));
+  // //   // Now timeComponents is an array of numbers representing hours and minutes
+     console.log(time);
+  }
+
+
+  // /* if(selected.time){
+  // time=selected.time.split(":");
+  // time.map((timee,index) => {
+  //   timee[index] = Number(timee);
+  // });
+  // } */
+
+if (selecteds.time && selecteds.date){
+  submissionDate = new Date(date[0], date[1]-1, date[2], time[0], time[1]);
+  }
+
+return (
     <Wrapper>
       <section className="secondpage">
-        <h2> {selected.title}</h2>
-        <p className="descword"> {selected.description} </p>
+        <h3> Title: { selecteds && selecteds.title}</h3>
+        <p className="descword"> <h3> Description: </h3> { selecteds && selecteds.description} </p>
 
         <div>
-          {selected.date && (
+          {selecteds.date && (
             <p className="deliverdate">
               {" "}
-              Delivered Date: <small> {selected.date}</small>
+              Delivered Date: <small> {selecteds.date}</small>
             </p>
           )}
-          {selected.time && (
+          {selecteds.time && (
             <p className="delivertime">
               {" "}
-              Delivered Time: <small> {selected.time}</small>{" "}
+              Delivered Time: <small> {selecteds.time}</small>{" "}
             </p>
           )}
         </div>
@@ -66,7 +70,6 @@ const Assignmentmain = () => {
         <p className="submissiondate">Submission date is  {  submissionDate &&submissionDate.toLocaleString()}</p>
       </section>
 
-      <Assignmentinfo />
     </Wrapper>
   );
 };
@@ -88,6 +91,9 @@ const Wrapper = styled.section`
   .descword {
     font-size: 17px;
     line-height: 25px;
+    h3{
+      display:inline-block;
+    }
   }
 
   .deliverdate {
